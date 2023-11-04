@@ -16,13 +16,18 @@ public class CameraController : MonoBehaviour
     public float minspawntime;
     public float maxspwantime;
     public GameObject[] menus = new GameObject[3];
-
+    private string bestDistKey = "BestDistKey";
+    private string bestKillKey = "BestKillKey";
+    private string bestTimeKey = "BestTimeKey";
     [SerializeField]
     public TextMeshProUGUI distanceTraveled;
     public TextMeshProUGUI timespent;
     public TextMeshProUGUI kills;
+    public TextMeshProUGUI bestDistanceTraveled;
+    public TextMeshProUGUI bestTimespent;
+    public TextMeshProUGUI bestKills;
     private int killcount = 0;
-    private string tim = "";
+    private float tim;
     private void Start()
     {
         StartCoroutine("EnemySpawner");
@@ -44,13 +49,32 @@ public class CameraController : MonoBehaviour
         {
             transform.position = new Vector3(-CamBounds, transform.position.y, transform.position.z);
         }
-        distanceTraveled.text = "" + (Mathf.RoundToInt((this.transform.position.y - 3f)*100))/100 + " m";
-        timespent.text = tim;
+
+        if (killcount > PlayerPrefs.GetInt(bestKillKey, 0))
+        {
+            PlayerPrefs.SetInt(bestKillKey, killcount);
+        }
+        if (Time.timeSinceLevelLoad > PlayerPrefs.GetInt(bestTimeKey, 0))
+        {
+            PlayerPrefs.SetInt(bestTimeKey, Mathf.FloorToInt(Time.timeSinceLevelLoad));
+        }
+        if (Mathf.FloorToInt(this.transform.position.y - 3f) > PlayerPrefs.GetInt(bestDistKey, 0))
+        {
+            PlayerPrefs.SetInt(bestDistKey, Mathf.FloorToInt(this.transform.position.y - 3f));
+        }
+
+        bestKills.text = PlayerPrefs.GetInt(bestKillKey, 0).ToString();
+        bestDistanceTraveled.text = PlayerPrefs.GetInt(bestDistKey, 0).ToString() + "m";
+        bestTimespent.text = Mathf.Floor(PlayerPrefs.GetInt(bestTimeKey, 0) / 60) + ":" + Mathf.Floor(PlayerPrefs.GetInt(bestTimeKey, 0) % 60);
+        PlayerPrefs.Save();
+
+        distanceTraveled.text = Mathf.FloorToInt(this.transform.position.y - 3f)+ "m";
+        timespent.text = (Mathf.Floor(tim / 60) + ":" + Mathf.Floor(tim % 60));
         kills.text = killcount.ToString();
     }
     public void playerDie()
     {
-        tim = Time.timeSinceLevelLoad.ToString();
+        tim = Time.timeSinceLevelLoad;
         Time.timeScale = 0;
         menus[0].SetActive(false);
         menus[1].SetActive(true);

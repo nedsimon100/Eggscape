@@ -11,6 +11,6 @@ public class UI : MonoBehaviour
 
     void Update()
     {
-        distanceTraveled.text = "" + Mathf.RoundToInt(playercam.transform.position.y - 3f)+" m";
+        distanceTraveled.text = "" + Mathf.FloorToInt(playercam.transform.position.y - 3f)+"m";
     }
 }
