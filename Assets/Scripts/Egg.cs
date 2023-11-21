@@ -19,7 +19,12 @@ public class Egg : MonoBehaviour
     {
         if (bounce == true)
         {
-            
+            if (collision.gameObject.tag == "Enemy")
+            {
+
+
+                Destroy(collision.gameObject);
+            }
         }
         else
         {
@@ -50,13 +55,16 @@ public class Egg : MonoBehaviour
     {
         FindObjectOfType<Manager>().Play("pop");
         cam = Camera.main.gameObject;
+        
     }
     private void Update()
     {
+        
         if (rb.velocity.magnitude < minSpeed || crack == true)
         {
             if (cracked == false)
             {
+              
                 cracked = true;
                 Instantiate(chickenTypes[powerchicken], transform.position, transform.rotation);
                 Destroy(this.gameObject);
