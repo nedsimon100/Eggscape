@@ -33,7 +33,7 @@ public class Egg : MonoBehaviour
                 if (collision.gameObject.tag == "destructable")
                 {
                     Destroy(collision.gameObject);
-                    rb.velocity *= fireForce;
+                    rb.linearVelocity *= fireForce;
                 }
             }
             if (collision.gameObject.tag == "Enemy")
@@ -60,7 +60,7 @@ public class Egg : MonoBehaviour
     private void Update()
     {
         
-        if (rb.velocity.magnitude < minSpeed || crack == true)
+        if (rb.linearVelocity.magnitude < minSpeed || crack == true)
         {
             if (cracked == false)
             {

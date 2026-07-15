@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
         rb.rotation = aimAngle;
         if (readyToGo == true)
         {
-            rb.velocity = (Player.transform.position-this.transform.position)/speedDiv;
+            rb.linearVelocity = (Player.transform.position-this.transform.position)/speedDiv;
         }
     }
 
